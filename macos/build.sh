@@ -24,10 +24,10 @@ for directory, extra in [(app, dict(CFBundleIdentifier='local.uengine.CopyPath',
 with open('build/sandbox.plist', 'wb') as f:
     plistlib.dump({'com.apple.security.app-sandbox': True}, f)
 PY
-xcrun swiftc Sources/FinderSync.swift -module-name CopyPathFinder -parse-as-library -application-extension \
+xcrun swiftc -target arm64-apple-macosx13.0 Sources/FinderSync.swift -module-name CopyPathFinder -parse-as-library -application-extension \
     -framework Cocoa -framework FinderSync -Xlinker -e -Xlinker _NSExtensionMain \
     -o "$EXT/Contents/MacOS/CopyPathFinder"
-xcrun swiftc Sources/main.swift -framework Cocoa -framework FinderSync -o "$APP/Contents/MacOS/CopyPath"
+xcrun swiftc -target arm64-apple-macosx13.0 Sources/main.swift -framework Cocoa -framework FinderSync -o "$APP/Contents/MacOS/CopyPath"
 codesign --force --sign - --entitlements build/sandbox.plist "$EXT"
 codesign --force --sign - "$APP"
 codesign --verify --deep --strict "$APP"
